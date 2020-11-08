@@ -5,15 +5,21 @@ final List<BudgetType> budgetTypeList = [
     title: 'Poor guy',
     subtitle: 'I barely have enough money for a beer',
     isSelected: false,
+    minPrice: 0.0,
+    maxPrice: 200.0,
   ),
   BudgetType(
-    title: 'Moderate distance',
-    subtitle: 'Destinations within 750 km',
+    title: 'Middle class',
+    subtitle: 'Have money but not too much',
     isSelected: false,
+    minPrice: 200.0,
+    maxPrice: 1000.0,
   ),
   BudgetType(
     title: 'Rich as F*ck',
     subtitle: 'I can buy Ritz Group',
     isSelected: false,
+    minPrice: 1000.0,
+    maxPrice: 100000.0,
   ),
 ];

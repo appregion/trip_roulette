@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trip_roulette/app/blocs/input_bloc.dart';
+import 'package:trip_roulette/app/blocs/result_bloc.dart';
 import 'package:trip_roulette/app/models/input_model.dart';
 import 'package:trip_roulette/app/ui/input_screen/budget_input_form.dart';
 import 'package:trip_roulette/app/ui/input_screen/location_type_input_form.dart';
 import 'package:trip_roulette/app/ui/input_screen/people_input_form.dart';
 import 'package:trip_roulette/app/ui/input_screen/select_date_input_form.dart';
+import 'package:trip_roulette/app/ui/result_screen/result_screen.dart';
 import 'package:trip_roulette/widgets/big_button.dart';
 import 'package:trip_roulette/widgets/single_input.dart';
 
@@ -133,6 +135,20 @@ class _InputScreenState extends State<InputScreen> {
 
   void _submit() {
     widget.bloc.submit();
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Provider<ResultBloc>(
+        create: (context) {
+          return ResultBloc(
+            inputBloc: widget.bloc,
+          );
+        },
+        child: Consumer<ResultBloc>(
+            builder: (context, bloc, _) => ResultScreen(
+                  bloc: bloc,
+                )),
+        dispose: (context, bloc) => bloc.dispose(),
+      );
+    }));
   }
 
   void _selectNumberOfPeople() {

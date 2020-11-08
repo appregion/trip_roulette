@@ -53,7 +53,7 @@ class CustomBottomSheet extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: BigButton(
               onTap: () => Navigator.of(context).pop(),
-              text: 'Готово',
+              text: 'Done',
               color: Colors.blue,
             ),
           ),

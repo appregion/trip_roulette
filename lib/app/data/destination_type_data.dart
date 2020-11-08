@@ -5,15 +5,21 @@ final List<DestinationType> destinationTypeList = [
     title: 'Around me',
     subtitle: 'Destinations within 250 km',
     isSelected: false,
+    minDistance: 0,
+    maxDistance: 2000,
   ),
   DestinationType(
     title: 'Moderate distance',
     subtitle: 'Destinations within 750 km',
     isSelected: false,
+    minDistance: 2000,
+    maxDistance: 5000,
   ),
   DestinationType(
     title: 'Travel the world',
     subtitle: 'Destinations within 10.000+ km',
     isSelected: false,
+    minDistance: 5000,
+    maxDistance: 25000,
   ),
 ];

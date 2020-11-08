@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:trip_roulette/app/blocs/bloc.dart';
-import 'package:trip_roulette/app/models/budget_type_data.dart';
+import 'package:trip_roulette/app/data/budget_type_data.dart';
 import 'package:trip_roulette/app/models/budget_type_model.dart';
-import 'package:trip_roulette/app/models/destination_type_data.dart';
+import 'package:trip_roulette/app/data/destination_type_data.dart';
 import 'package:trip_roulette/app/models/destination_type_model.dart';
 import 'package:trip_roulette/app/models/geolocation_item.dart';
 import 'package:trip_roulette/app/models/input_model.dart';
@@ -20,12 +20,14 @@ class InputBloc extends Bloc {
   @override
   void dispose() {
     _modelSubject.close();
+    print('disposed');
   }
 
   void updateWith({
     double latitude,
     double longitude,
     String location,
+    String iataCode,
     bool gettingLocation,
     DateTime departureDate,
     DateTime returnDate,
@@ -39,6 +41,7 @@ class InputBloc extends Bloc {
       latitude: latitude,
       longitude: longitude,
       location: location,
+      iataCode: iataCode,
       gettingLocation: gettingLocation,
       departureDate: departureDate,
       returnDate: returnDate,
@@ -53,22 +56,26 @@ class InputBloc extends Bloc {
     updateWith(gettingLocation: true);
     // get coordinates
     GeolocationItem item = await Geolocation().getPosition();
-    // get location name from coordinates
-    String locationName = await Geolocation()
-        .getLocationName(latitude: item.latitude, longitude: item.longitude);
+    // get iata code
+    String iata = await Geolocation()
+        .getIataCode(latitude: item.latitude, longitude: item.longitude);
+    //get location name from iata code
+    String location =
+        await Geolocation().getLocationNameWithIataCode(iataCode: iata);
     // update model with new values
     updateWith(
       latitude: item.latitude,
       longitude: item.longitude,
-      location: locationName,
+      location: location,
+      iataCode: iata,
       gettingLocation: false,
     );
   }
 
   String locationInputText() {
     return _model.location == null
-        ? 'Your current location'
-        : 'Current location: ' + _model.location;
+        ? 'Get your current location'
+        : _model.location;
   }
 
   void selectDate(DateTime newDate, bool isDepartureDate) {
@@ -208,13 +215,43 @@ class InputBloc extends Bloc {
         : false;
   }
 
-  void submit() {
-    print(_model.location);
-    print(_model.departureDate);
-    print(_model.returnDate);
-    print(_model.numberOfAdults);
-    print(_model.numberOfKids);
-    print(_model.destinationType);
-    print(_model.budgetType);
-  }
+  void submit() async {}
+
+  // void selectDestination() async {
+  //   List<FlightItem> allFlights =
+  //       await Places().getDirections(iataCode: _model.iataCode);
+  //   // filter list based on destination proximity imposed by user
+  //   List<FlightItem> filtered = [];
+  //   allFlights.forEach((element) {
+  //     int maxDistance = _model.destinationType == 0
+  //         ? 500
+  //         : _model.destinationType == 1
+  //             ? 2000
+  //             : 25000;
+  //     int minDistance = _model.destinationType == 0
+  //         ? 0
+  //         : _model.destinationType == 1
+  //             ? 500
+  //             : 2000;
+  //     if (element.distance > minDistance && element.distance < maxDistance) {
+  //       filtered.add(element);
+  //     }
+  //   });
+  //   print(filtered.length);
+  //
+  //   // loop through list until find flights for required dates
+  //   // bool flightFound = false;
+  //   // for (var i = 0; flightFound != true && i < filtered.length; i++) {
+  //   //   int price = await Places().getTicketPrice(
+  //   //     origin: _model.iataCode,
+  //   //     destination: filtered[i].destination,
+  //   //     departureDate: _model.departureDate,
+  //   //     returnDate: _model.returnDate,
+  //   //   );
+  //   //   if (price != 0) {
+  //   //     flightFound = true;
+  //   //     print(price);
+  //   //   }
+  //   // }
+  // }
 }

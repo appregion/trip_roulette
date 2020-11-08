@@ -3,6 +3,7 @@ class InputModel {
     this.latitude,
     this.longitude,
     this.location,
+    this.iataCode,
     this.gettingLocation = false,
     this.departureDate,
     this.returnDate,
@@ -14,6 +15,7 @@ class InputModel {
   final double latitude;
   final double longitude;
   final String location;
+  final String iataCode;
   final bool gettingLocation;
   final DateTime departureDate;
   final DateTime returnDate;
@@ -26,6 +28,7 @@ class InputModel {
     double latitude,
     double longitude,
     String location,
+    String iataCode,
     bool gettingLocation,
     DateTime departureDate,
     DateTime returnDate,
@@ -38,6 +41,7 @@ class InputModel {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       location: location ?? this.location,
+      iataCode: iataCode ?? this.iataCode,
       gettingLocation: gettingLocation ?? this.gettingLocation,
       departureDate: departureDate ?? this.departureDate,
       returnDate: returnDate ?? this.returnDate,
