@@ -21,7 +21,7 @@ class PlacesWidget extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 10.0,
+          height: 15.0,
         ),
         Text(
           'Interesting Places',

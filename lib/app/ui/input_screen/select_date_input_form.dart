@@ -3,7 +3,11 @@ import 'package:trip_roulette/app/blocs/input_bloc.dart';
 
 class SelectDateInputForm extends StatelessWidget {
   final InputBloc bloc;
-  SelectDateInputForm({@required this.bloc});
+  final bool validated;
+  SelectDateInputForm({
+    @required this.bloc,
+    @required this.validated,
+  });
 
   Future _selectDate(BuildContext context, bool isDepartureDate) async {
     final DateTime newDate = await showDatePicker(
@@ -22,7 +26,9 @@ class SelectDateInputForm extends StatelessWidget {
     return GestureDetector(
       onTap: () => _selectDate(context, isDepartureDate),
       child: Container(
-        color: Colors.transparent,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+        ),
         height: 60.0,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -51,29 +57,54 @@ class SelectDateInputForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Column(
-        children: [
-          buildSingleDateInput(
-            context,
-            true,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        validated
+            ? SizedBox()
+            : Text(
+                'Required field: ',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+        validated
+            ? SizedBox()
+            : SizedBox(
+                height: 5.0,
+              ),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+            border: validated
+                ? null
+                : Border.all(
+                    style: BorderStyle.solid,
+                    width: 2.5,
+                    color: Colors.red,
+                  ),
           ),
-          Divider(
-            height: 1.0,
-            indent: 20.0,
-            endIndent: 20.0,
+          child: Column(
+            children: [
+              buildSingleDateInput(
+                context,
+                true,
+              ),
+              Divider(
+                height: 1.0,
+                indent: 20.0,
+                endIndent: 20.0,
+              ),
+              buildSingleDateInput(
+                context,
+                false,
+              ),
+            ],
           ),
-          buildSingleDateInput(
-            context,
-            false,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

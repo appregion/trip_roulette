@@ -72,12 +72,21 @@ class _InputScreenState extends State<InputScreen> {
                       onTap: () async {
                         await widget.bloc.getCurrentPosition();
                       },
+                      validated: widget.bloc.validateInputField(
+                        inputField: model.location,
+                        submitted: model.submitted,
+                      ),
                     ),
                     SizedBox(
                       height: inputHeightInterval,
                     ),
                     SelectDateInputForm(
                       bloc: widget.bloc,
+                      validated: widget.bloc.validateDateInput(
+                        departureDate: model.departureDate,
+                        returnDate: model.returnDate,
+                        submitted: model.submitted,
+                      ),
                     ),
                     SizedBox(
                       height: inputHeightInterval,
@@ -87,6 +96,10 @@ class _InputScreenState extends State<InputScreen> {
                       text: widget.bloc.peopleInputFormText(),
                       trailingIcon: Icons.arrow_drop_down,
                       onTap: _selectNumberOfPeople,
+                      validated: widget.bloc.validateInputField(
+                        inputField: model.numberOfAdults,
+                        submitted: model.submitted,
+                      ),
                     ),
                     SizedBox(
                       height: inputHeightInterval,
@@ -96,6 +109,10 @@ class _InputScreenState extends State<InputScreen> {
                       text: widget.bloc.destinationInputFormText(),
                       trailingIcon: Icons.arrow_drop_down,
                       onTap: _selectLocationType,
+                      validated: widget.bloc.validateInputField(
+                        inputField: model.destinationType,
+                        submitted: model.submitted,
+                      ),
                     ),
                     SizedBox(
                       height: inputHeightInterval,
@@ -105,6 +122,10 @@ class _InputScreenState extends State<InputScreen> {
                       text: widget.bloc.budgetInputFormText(),
                       trailingIcon: Icons.arrow_drop_down,
                       onTap: _selectBudget,
+                      validated: widget.bloc.validateInputField(
+                        inputField: model.budgetType,
+                        submitted: model.submitted,
+                      ),
                     ),
                     SizedBox(
                       height: inputHeightInterval,
@@ -112,7 +133,7 @@ class _InputScreenState extends State<InputScreen> {
                     BigButton(
                       onTap: _submit,
                       text: 'Search',
-                      color: Colors.deepOrange,
+                      color: Colors.blue,
                     ),
                   ],
                 ),
@@ -134,21 +155,23 @@ class _InputScreenState extends State<InputScreen> {
   }
 
   void _submit() {
-    widget.bloc.submit();
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return Provider<ResultBloc>(
-        create: (context) {
-          return ResultBloc(
-            inputBloc: widget.bloc,
-          );
-        },
-        child: Consumer<ResultBloc>(
-            builder: (context, bloc, _) => ResultScreen(
-                  bloc: bloc,
-                )),
-        dispose: (context, bloc) => bloc.dispose(),
-      );
-    }));
+    bool submitValidated = widget.bloc.submit();
+    if (submitValidated) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return Provider<ResultBloc>(
+          create: (context) {
+            return ResultBloc(
+              inputBloc: widget.bloc,
+            );
+          },
+          child: Consumer<ResultBloc>(
+              builder: (context, bloc, _) => ResultScreen(
+                    bloc: bloc,
+                  )),
+          dispose: (context, bloc) => bloc.dispose(),
+        );
+      }));
+    }
   }
 
   void _selectNumberOfPeople() {

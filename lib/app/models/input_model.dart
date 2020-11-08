@@ -11,6 +11,7 @@ class InputModel {
     this.numberOfKids = 0,
     this.destinationType,
     this.budgetType,
+    this.submitted = false,
   });
   final double latitude;
   final double longitude;
@@ -23,6 +24,7 @@ class InputModel {
   final int numberOfKids;
   final int destinationType;
   final int budgetType;
+  final bool submitted;
 
   InputModel copyWith({
     double latitude,
@@ -36,6 +38,7 @@ class InputModel {
     int numberOfKids,
     int destinationType,
     int budgetType,
+    bool submitted,
   }) {
     return InputModel(
       latitude: latitude ?? this.latitude,
@@ -49,6 +52,7 @@ class InputModel {
       numberOfKids: numberOfKids ?? this.numberOfKids,
       destinationType: destinationType ?? this.destinationType,
       budgetType: budgetType ?? this.budgetType,
+      submitted: submitted ?? this.submitted,
     );
   }
 }

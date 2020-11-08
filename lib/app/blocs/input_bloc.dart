@@ -35,6 +35,7 @@ class InputBloc extends Bloc {
     int numberOfKids,
     int destinationType,
     int budgetType,
+    bool submitted,
   }) {
     // update model
     _modelSubject.add(_model.copyWith(
@@ -49,6 +50,7 @@ class InputBloc extends Bloc {
       numberOfKids: numberOfKids,
       destinationType: destinationType,
       budgetType: budgetType,
+      submitted: submitted,
     ));
   }
 
@@ -215,7 +217,37 @@ class InputBloc extends Bloc {
         : false;
   }
 
-  void submit() async {}
+  bool validateInputField({dynamic inputField, bool submitted}) {
+    if (inputField != null || submitted == false) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool validateDateInput(
+      {DateTime departureDate, DateTime returnDate, bool submitted}) {
+    if (departureDate != null && returnDate != null || submitted == false) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool submit() {
+    // validate the inputs
+    updateWith(submitted: true);
+    if (_model.location != null &&
+        _model.departureDate != null &&
+        _model.returnDate != null &&
+        _model.numberOfAdults != null &&
+        _model.destinationType != null &&
+        _model.budgetType != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // void selectDestination() async {
   //   List<FlightItem> allFlights =

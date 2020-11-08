@@ -14,7 +14,7 @@ class Places {
   Future<List<PlaceItem>> getPlacesNearBy(
       {double latitude, double longitude}) async {
     var url =
-        'https://en.wikipedia.org/w/api.php?action=query&generator=geosearch&prop=coordinates|pageimages&ggscoord=$latitude|$longitude&ggsradius=10000&ggslimit=50&format=json';
+        'https://en.wikipedia.org/w/api.php?action=query&generator=geosearch&prop=coordinates|pageimages&ggscoord=$latitude|$longitude&ggsradius=10000&ggslimit=10&format=json';
 
     http.Response response = await http.get(url);
 
