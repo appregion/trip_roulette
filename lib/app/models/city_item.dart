@@ -3,7 +3,11 @@ class City {
   final String code;
   final String countryCode;
 
-  City({this.name, this.code, this.countryCode});
+  City({
+    this.name,
+    this.code,
+    this.countryCode,
+  });
 
   factory City.fromJson(Map<String, dynamic> data) {
     return City(

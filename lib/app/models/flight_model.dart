@@ -10,8 +10,6 @@ class FlightItem {
   DateTime returnDate;
   int tripClass;
   int numberOfChanges;
-  double latitude;
-  double longitude;
 
   FlightItem({
     this.price,
@@ -23,8 +21,6 @@ class FlightItem {
     this.returnDate,
     this.tripClass,
     this.numberOfChanges,
-    this.latitude,
-    this.longitude,
   });
 
   factory FlightItem.fromJson(Map<String, dynamic> data) {

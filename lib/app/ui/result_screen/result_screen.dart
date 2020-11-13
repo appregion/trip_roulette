@@ -7,7 +7,7 @@ import 'package:trip_roulette/app/ui/result_screen/flight_info_widget.dart';
 import 'package:trip_roulette/app/ui/result_screen/image_gallery.dart';
 import 'package:trip_roulette/app/ui/result_screen/places_widget.dart';
 import 'package:trip_roulette/app/ui/result_screen/weather_widget.dart';
-import 'package:trip_roulette/widgets/outlined_icon_button.dart';
+import 'package:trip_roulette/app/ui/widgets/outlined_icon_button.dart';
 
 class ResultScreen extends StatefulWidget {
   final ResultBloc bloc;
@@ -122,7 +122,7 @@ class _ResultScreenState extends State<ResultScreen> {
                           height: 10.0,
                         ),
                         PlacesWidget(
-                          items: model.placeItems,
+                          bloc: widget.bloc,
                         ),
                         SizedBox(
                           height: 60.0,

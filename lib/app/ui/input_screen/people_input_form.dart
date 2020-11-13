@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trip_roulette/app/blocs/input_bloc.dart';
 import 'package:trip_roulette/app/models/input_model.dart';
-import 'package:trip_roulette/widgets/modal_bottom_sheet.dart';
-import 'package:trip_roulette/widgets/round_icon_button.dart';
+import 'package:trip_roulette/app/ui/widgets/modal_bottom_sheet.dart';
+import 'package:trip_roulette/app/ui/widgets/round_icon_button.dart';
 
 class NumberOfPeopleInputForm extends StatelessWidget {
   final InputBloc bloc;

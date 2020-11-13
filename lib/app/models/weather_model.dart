@@ -4,5 +4,10 @@ class WeatherItem {
   final int maxTemp;
   final String iconName;
 
-  WeatherItem({this.date, this.minTemp, this.maxTemp, this.iconName});
+  WeatherItem({
+    this.date,
+    this.minTemp,
+    this.maxTemp,
+    this.iconName,
+  });
 }

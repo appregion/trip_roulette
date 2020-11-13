@@ -8,8 +8,8 @@ import 'package:trip_roulette/app/ui/input_screen/location_type_input_form.dart'
 import 'package:trip_roulette/app/ui/input_screen/people_input_form.dart';
 import 'package:trip_roulette/app/ui/input_screen/select_date_input_form.dart';
 import 'package:trip_roulette/app/ui/result_screen/result_screen.dart';
-import 'package:trip_roulette/widgets/big_button.dart';
-import 'package:trip_roulette/widgets/single_input.dart';
+import 'package:trip_roulette/app/ui/widgets/big_button.dart';
+import 'package:trip_roulette/app/ui/widgets/single_input.dart';
 
 class InputScreen extends StatefulWidget {
   final InputBloc bloc;

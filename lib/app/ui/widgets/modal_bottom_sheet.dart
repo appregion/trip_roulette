@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trip_roulette/widgets/big_button.dart';
+import 'package:trip_roulette/app/ui/widgets/big_button.dart';
 
 class CustomBottomSheet extends StatelessWidget {
   CustomBottomSheet({@required this.title, @required this.widgetList});
