@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:share/share.dart';
 import 'package:trip_roulette/app/blocs/bloc.dart';
 import 'package:trip_roulette/app/blocs/input_bloc.dart';
 import 'package:trip_roulette/app/data/destination_type_data.dart';
@@ -8,6 +9,7 @@ import 'package:trip_roulette/app/models/city_item.dart';
 import 'package:trip_roulette/app/models/destination_type_model.dart';
 import 'package:trip_roulette/app/models/flight_model.dart';
 import 'package:trip_roulette/app/models/geolocation_item.dart';
+import 'package:trip_roulette/app/models/image_item.dart';
 import 'package:trip_roulette/app/models/input_model.dart';
 import 'package:trip_roulette/app/models/place_item.dart';
 import 'package:trip_roulette/app/models/result_model.dart';
@@ -29,6 +31,11 @@ class ResultBloc extends Bloc {
   Stream<ResultModel> get resultModelStream => _resultModelSubject.stream;
 
   ResultModel get _resultModel => _resultModelSubject.value;
+
+  @override
+  void dispose() {
+    _resultModelSubject.close();
+  }
 
   void updateWith({
     bool loadingResult,
@@ -55,16 +62,11 @@ class ResultBloc extends Bloc {
 
   Future<void> loadData() async {
     await getInputData();
-    print('1');
 
     await selectFlight();
 
-    print('2');
-
     // get location name
     await getLocationName(_resultModel.tripItem.destination);
-
-    print('3');
 
     // get airport code with city code
     String _airportCode = await Geolocation()
@@ -88,7 +90,6 @@ class ResultBloc extends Bloc {
   Future<void> getInputData() async {
     InputModel inputModel = await inputBloc.modelStream.first;
     updateWith(inputModel: inputModel);
-    print('some input data: ${_resultModel.inputModel.location}');
   }
 
   Future<void> selectFlight() async {
@@ -196,8 +197,44 @@ class ResultBloc extends Bloc {
     }
   }
 
-  @override
-  void dispose() {
-    _resultModelSubject.close();
+  Future<void> share() async {
+    final String _text =
+        'Trip Roulette:\nDestination: ${_resultModel.destinationName}\nPrice from: \$${formatPrice(_resultModel.tripItem.price)}\nFlight duration: ${getDurationText(_resultModel.tripItem.duration)} \nDistance: ${formatDistance(_resultModel.tripItem.distance)} km';
+    await Share.share(_text);
+  }
+
+  String getClassText(int tripClass) {
+    return tripClass == 0
+        ? 'Economy'
+        : tripClass == 1
+            ? 'Business'
+            : 'First';
+  }
+
+  String formatDistance(int tripDistance) {
+    String number = tripDistance.toString();
+    if (number.length > 3) {
+      String partTwo = number.substring(number.length - 3, number.length);
+      String partOne = number.substring(0, number.length - partTwo.length);
+      number = partOne + ' ' + partTwo;
+    }
+    return number;
+  }
+
+  String formatPrice(double tripPrice) {
+    String number = tripPrice.toString();
+    if (number.length > 6) {
+      String partTwo = number.substring(number.length - 6, number.length);
+      String partOne = number.substring(0, number.length - partTwo.length);
+      number = partOne + ',' + partTwo;
+    }
+    return number;
+  }
+
+  String getDurationText(int tripDuration) {
+    int hours = (tripDuration / 60).floor();
+    int minutes = tripDuration - (hours * 60);
+    String duration = '${hours}h ${minutes}m';
+    return duration;
   }
 }

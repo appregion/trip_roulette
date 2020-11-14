@@ -9,6 +9,7 @@ import 'package:trip_roulette/app/ui/input_screen/people_input_form.dart';
 import 'package:trip_roulette/app/ui/input_screen/select_date_input_form.dart';
 import 'package:trip_roulette/app/ui/result_screen/result_screen.dart';
 import 'package:trip_roulette/app/ui/widgets/big_button.dart';
+import 'package:trip_roulette/app/ui/widgets/platform_alert_dialog.dart';
 import 'package:trip_roulette/app/ui/widgets/single_input.dart';
 
 class InputScreen extends StatefulWidget {
@@ -70,7 +71,19 @@ class _InputScreenState extends State<InputScreen> {
                               color: Colors.grey,
                             ),
                       onTap: () async {
-                        await widget.bloc.getCurrentPosition();
+                        bool _geoAccess =
+                            await widget.bloc.getCurrentPosition();
+                        if (!_geoAccess) {
+                          bool _isClosed = await PlatformAlertDialog(
+                            title: 'Error: Geolocation services',
+                            content:
+                                'Please give access to Trip Roulette to your current location. Do it in your phone settings',
+                            buttonText: 'Ok',
+                          ).show(context);
+                          if (_isClosed) {
+                            await widget.bloc.openPhoneSettings();
+                          }
+                        }
                       },
                       validated: widget.bloc.validateInputField(
                         inputField: model.location,

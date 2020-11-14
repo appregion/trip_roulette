@@ -55,42 +55,55 @@ class InputBloc extends Bloc {
     ));
   }
 
-  Future<void> getCurrentPosition() async {
+  Future<bool> getCurrentPosition() async {
     String _location = 'We couldn\'t get your location';
+
     updateWith(gettingLocation: true);
-    // get coordinates
-    GeolocationItem _item = await Geolocation().getPosition();
-    // get nearby airport iata code with the coordinates
-    String _iataCode = await Geolocation()
-        .getIataCode(latitude: _item.latitude, longitude: _item.longitude);
-    if (_iataCode != null) {
-      // get city code with airport iata code
-      String _cityCode = await Geolocation().getCityCodeFromIataCode(_iataCode);
-      if (_cityCode != null) {
-        // get city item
-        City _cityItem = await Geolocation().getCityItemWithCityCode(_cityCode);
-        if (_cityItem != null) {
-          // get city name & country name and assign them to location string
-          String _cityName = _cityItem.name;
-          String _countryName = await Geolocation()
-              .getCountryNameWithCountryCode(_cityItem.countryCode);
-          if (_countryName != null) {
-            _location = _cityName + ', ' + _countryName;
-          } else {
-            _location = _cityName;
+
+    bool permissionGranted = await Geolocation().checkGeoPermission();
+    if (permissionGranted) {
+      // get coordinates
+      GeolocationItem _item = await Geolocation().getPosition();
+      // get nearby airport iata code with the coordinates
+      String _iataCode = await Geolocation()
+          .getIataCode(latitude: _item.latitude, longitude: _item.longitude);
+      if (_iataCode != null) {
+        // get city code with airport iata code
+        String _cityCode =
+            await Geolocation().getCityCodeFromIataCode(_iataCode);
+        if (_cityCode != null) {
+          // get city item
+          City _cityItem =
+              await Geolocation().getCityItemWithCityCode(_cityCode);
+          if (_cityItem != null) {
+            // get city name & country name and assign them to location string
+            String _cityName = _cityItem.name;
+            String _countryName = await Geolocation()
+                .getCountryNameWithCountryCode(_cityItem.countryCode);
+            if (_countryName != null) {
+              _location = _cityName + ', ' + _countryName;
+            } else {
+              _location = _cityName;
+            }
           }
         }
       }
+      updateWith(
+        latitude: _item.latitude,
+        longitude: _item.longitude,
+        location: _location,
+        iataCode: _iataCode,
+        gettingLocation: false,
+      );
+    } else {
+      updateWith(gettingLocation: false);
+      return false;
     }
+    return true;
+  }
 
-    // update model with new values
-    updateWith(
-      latitude: _item.latitude,
-      longitude: _item.longitude,
-      location: _location,
-      iataCode: _iataCode,
-      gettingLocation: false,
-    );
+  Future<void> openPhoneSettings() async {
+    await Geolocation().openSettings();
   }
 
   String locationInputText() {

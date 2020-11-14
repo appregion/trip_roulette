@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:trip_roulette/app/models/flight_model.dart';
 import 'package:trip_roulette/app/models/place_item.dart';
 import 'package:trip_roulette/app/models/weather_model.dart';
-import 'package:trip_roulette/app/resources/images.dart';
 
+import 'image_item.dart';
 import 'input_model.dart';
 
 class ResultModel {

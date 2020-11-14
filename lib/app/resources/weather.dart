@@ -16,7 +16,6 @@ class Weather {
         'https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&units=metric&exclude=hourly,minutely&appid=$_apiKey';
 
     http.Response _response = await http.get(_url);
-    print(_response.statusCode);
     if (_response.statusCode == 200) {
       List<dynamic> _weatherData = jsonDecode(_response.body)['daily'];
       List<WeatherItem> _items = [];

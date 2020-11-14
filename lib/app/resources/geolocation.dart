@@ -8,6 +8,21 @@ import 'dart:convert';
 import 'package:trip_roulette/app/resources/api_keys.dart';
 
 class Geolocation {
+  /// check if the user granted permission to access geolocation
+  Future<bool> checkGeoPermission() async {
+    LocationPermission _currentPermission = await Geolocator.checkPermission();
+    if (_currentPermission == LocationPermission.denied ||
+        _currentPermission == LocationPermission.deniedForever) {
+      // request new permission from user and check his response
+      LocationPermission _newPermission = await Geolocator.requestPermission();
+      if (_newPermission == LocationPermission.denied ||
+          _newPermission == LocationPermission.deniedForever) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /// get latitude and longitude from the user's device
   Future<GeolocationItem> getPosition() async {
     Position position = await Geolocator.getCurrentPosition(
@@ -16,6 +31,11 @@ class Geolocation {
       latitude: position.latitude,
       longitude: position.longitude,
     );
+  }
+
+  /// open phone settings to change geolocation access preferences
+  Future<void> openSettings() async {
+    await Geolocator.openLocationSettings();
   }
 
   /// get nearby airport iata code from coordinates
@@ -107,10 +127,10 @@ class Geolocation {
   Future<String> getLocationNameWithCoordinates(
       {double latitude, double longitude}) async {
     // Get instance of api keys class where the keys are stored
-    ApiKeys apiKeys = ApiKeys();
+    ApiKeys _apiKeys = ApiKeys();
 
     // assign the api key with the corresponding value
-    final String _apiKey = apiKeys.googlePlacesApiKey;
+    final String _apiKey = _apiKeys.googlePlacesApiKey;
 
     String _url =
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$_apiKey';
@@ -134,12 +154,11 @@ class Geolocation {
     http.Response _response = await http.get(_url);
     var decodedData = jsonDecode(_response.body);
     if (_response.statusCode == 200) {
-      GeolocationItem item = GeolocationItem(
+      GeolocationItem _item = GeolocationItem(
         latitude: double.parse(decodedData['latitude']),
         longitude: double.parse(decodedData['longitude']),
       );
-      print(item.latitude);
-      return item;
+      return _item;
     }
     return null;
   }

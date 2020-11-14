@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:trip_roulette/app/resources/images.dart';
+import 'package:trip_roulette/app/models/image_item.dart';
 
 class ImageGalleryWidget extends StatelessWidget {
   final List<ImageItem> images;

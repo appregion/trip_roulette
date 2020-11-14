@@ -1,31 +1,18 @@
 import 'dart:convert';
-
+import 'package:trip_roulette/app/resources/api_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class ImageItem {
-  final String imageUrl;
-
-  ImageItem({this.imageUrl});
-
-  factory ImageItem.fromJson(Map<String, dynamic> data) {
-    return ImageItem(
-
-        //image from Flickr
-        // imageUrl:
-        //     'https://live.staticflickr.com/${data['server']}/${data['id']}_${data['secret']}_c.jpg',
-        );
-  }
-}
-
 class Images {
+  ApiKeys _apiKeys = ApiKeys();
+
   Future<ImageProvider> getImageFromGoogle({String locationName}) async {
-    String apiKey = 'AIzaSyAYvxvPsW0RT8XHy8nTUOj2C6KIvlR0g68';
+    final String _apiKey = _apiKeys.googleImageApiKey;
     String photoReference = '';
 
     // find place by location name
     String findPlaceUrl =
-        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$locationName&inputtype=textquery&fields=photos,name,rating&key=$apiKey';
+        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$locationName&inputtype=textquery&fields=photos,name,rating&key=$_apiKey';
     http.Response findPlaceResponse = await http.get(findPlaceUrl);
     // check response status and return location
     String findPlaceResponseStatus =
@@ -35,7 +22,7 @@ class Images {
           ['photos'][0]['photo_reference'];
       print('photo reference is $photoReference');
       String url =
-          'https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=$photoReference&key=$apiKey';
+          'https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=$photoReference&key=$_apiKey';
       http.Response imageResponce = await http.get(url);
 
       ImageProvider image = Image.memory(imageResponce.bodyBytes).image;
@@ -47,10 +34,11 @@ class Images {
   }
 
   // Future<List<ImageItem>> getImages({String location}) async {
-  //   String key = '260c8fe4eeb8fd6a04a6c8c80e175d25';
+  //
+  //   final String _apiKey = _apiKeys.flickrApiKey;
   //
   //   var flickrApi =
-  //       'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=$key&text=$location&format=json&nojsoncallback=1&privacy_filter=1&content_type=1&geo_context=2&per_page=30';
+  //       'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=$_apiKey&text=$location&format=json&nojsoncallback=1&privacy_filter=1&content_type=1&geo_context=2&per_page=30';
   //
   //   var wikiMediaUrl =
   //       'https://en.wikipedia.org/w/api.php?action=query&titles=$location&prop=images&format=json';

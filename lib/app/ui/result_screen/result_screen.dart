@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:trip_roulette/app/blocs/result_bloc.dart';
 import 'package:trip_roulette/app/models/result_model.dart';
 import 'package:trip_roulette/app/ui/result_screen/flight_info_widget.dart';
-import 'package:trip_roulette/app/ui/result_screen/image_gallery.dart';
+import 'package:trip_roulette/app/ui/result_screen/loading_screen.dart';
 import 'package:trip_roulette/app/ui/result_screen/places_widget.dart';
 import 'package:trip_roulette/app/ui/result_screen/weather_widget.dart';
 import 'package:trip_roulette/app/ui/widgets/outlined_icon_button.dart';
@@ -39,14 +39,7 @@ class _ResultScreenState extends State<ResultScreen> {
         builder: (context, snapshot) {
           final ResultModel model = snapshot.data;
           if (model.loadingResult) {
-            return Scaffold(
-              backgroundColor: Colors.black,
-              body: SafeArea(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            );
+            return LoadingScreen();
           } else {
             return Scaffold(
               backgroundColor: Colors.black,
@@ -66,16 +59,15 @@ class _ResultScreenState extends State<ResultScreen> {
                             ),
                             OutlinedIconButton(
                               icon: CupertinoIcons.share,
-                              onTap: () => Navigator.of(context).pop(),
+                              onTap: () async {
+                                await widget.bloc.share();
+                              },
                             ),
                           ],
                         ),
                         SizedBox(
                           height: 10.0,
                         ),
-                        // ImageGalleryWidget(
-                        //   images: model.images,
-                        // ),
                         ClipRRect(
                           borderRadius: BorderRadius.all(
                             Radius.circular(15.0),
@@ -86,6 +78,7 @@ class _ResultScreenState extends State<ResultScreen> {
                             height: MediaQuery.of(context).size.height * 0.6,
                           ),
                         ),
+                        //TODO Uncomment this in Production
                         // ClipRRect(
                         //   borderRadius: BorderRadius.all(
                         //     Radius.circular(15.0),
@@ -110,7 +103,7 @@ class _ResultScreenState extends State<ResultScreen> {
                           height: 20.0,
                         ),
                         FlightInfoWidget(
-                          model: model,
+                          bloc: widget.bloc,
                         ),
                         SizedBox(
                           height: 10.0,
