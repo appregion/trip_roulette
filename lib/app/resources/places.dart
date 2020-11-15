@@ -33,6 +33,7 @@ class Places {
           element.photoUrl.contains('.gif') ||
           element.photoUrl.contains('\'') ||
           element.photoUrl.contains('"'));
+      print('We found ${_items.length} places near by');
       return _items;
     }
 

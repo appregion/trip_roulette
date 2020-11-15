@@ -172,11 +172,11 @@ class ResultBloc extends Bloc {
   }
 
   Future<void> getWeather({double latitude, double longitude}) async {
-    List<WeatherItem> items = await Weather().getWeather(
+    List<WeatherItem> _items = await Weather().getWeather(
       latitude: latitude,
       longitude: longitude,
     );
-    updateWith(weatherItems: items);
+    updateWith(weatherItems: _items);
   }
 
   Future<void> getPlacesNearBy({double latitude, double longitude}) async {

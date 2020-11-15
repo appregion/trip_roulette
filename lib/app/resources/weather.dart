@@ -29,6 +29,8 @@ class Weather {
           iconName: _weatherData[i]['weather'][0]['icon'],
         ));
       }
+      print('Min temp on first day: ${_items[0].minTemp}');
+
       return _items;
     } else {
       return null;

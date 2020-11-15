@@ -61,7 +61,7 @@ class Geolocation {
           _decodedData.map((data) => AirportItem.fromJson(data)).toList();
       String _airportCode = _airports
           .firstWhere((element) => element.cityCode == cityCode)
-          .cityCode;
+          .iataCode;
       print('Airport code is $_airportCode');
       return _airportCode;
     }
@@ -158,6 +158,8 @@ class Geolocation {
         latitude: double.parse(decodedData['latitude']),
         longitude: double.parse(decodedData['longitude']),
       );
+      print(
+          'Coordinates from iata code are: ${_item.longitude}, ${_item.latitude}');
       return _item;
     }
     return null;

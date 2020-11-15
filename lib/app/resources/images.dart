@@ -7,25 +7,25 @@ class Images {
   ApiKeys _apiKeys = ApiKeys();
 
   Future<ImageProvider> getImageFromGoogle({String locationName}) async {
-    final String _apiKey = _apiKeys.googleImageApiKey;
-    String photoReference = '';
+    final String _apiKey = _apiKeys.googlePlacesApiKey;
+    String _photoReference = '';
 
     // find place by location name
-    String findPlaceUrl =
+    String _findPlaceUrl =
         'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$locationName&inputtype=textquery&fields=photos,name,rating&key=$_apiKey';
-    http.Response findPlaceResponse = await http.get(findPlaceUrl);
+    http.Response findPlaceResponse = await http.get(_findPlaceUrl);
     // check response status and return location
-    String findPlaceResponseStatus =
+    String _findPlaceResponseStatus =
         jsonDecode(findPlaceResponse.body)['status'];
-    if (findPlaceResponseStatus == 'OK') {
-      photoReference = jsonDecode(findPlaceResponse.body)['candidates'][0]
+    if (_findPlaceResponseStatus == 'OK') {
+      _photoReference = jsonDecode(findPlaceResponse.body)['candidates'][0]
           ['photos'][0]['photo_reference'];
-      print('photo reference is $photoReference');
-      String url =
-          'https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=$photoReference&key=$_apiKey';
-      http.Response imageResponce = await http.get(url);
+      print('photo reference is $_photoReference');
+      String _url =
+          'https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=$_photoReference&key=$_apiKey';
+      http.Response _imageResponse = await http.get(_url);
 
-      ImageProvider image = Image.memory(imageResponce.bodyBytes).image;
+      ImageProvider image = Image.memory(_imageResponse.bodyBytes).image;
 
       return image;
     } else {
