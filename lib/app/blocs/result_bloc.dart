@@ -81,8 +81,7 @@ class ResultBloc extends Bloc {
           latitude: _item.latitude, longitude: _item.longitude);
     }
 
-    // uncomment in production
-    // await getImages();
+    await getImages();
 
     updateWith(loadingResult: false);
   }

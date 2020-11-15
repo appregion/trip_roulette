@@ -68,27 +68,26 @@ class _ResultScreenState extends State<ResultScreen> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15.0),
-                          ),
-                          child: Image.network(
-                            'https://www.telegraph.co.uk/content/dam/Travel/Destinations/Asia/Thailand/Phuket/phuket-thailand-beach-boat-lead-main-guide.jpg?imwidth=1400',
-                            fit: BoxFit.cover,
-                            height: MediaQuery.of(context).size.height * 0.6,
-                          ),
-                        ),
-                        //TODO Uncomment this in Production
                         // ClipRRect(
                         //   borderRadius: BorderRadius.all(
                         //     Radius.circular(15.0),
                         //   ),
-                        //   child: Image(
-                        //     image: model.image,
+                        //   child: Image.network(
+                        //     'https://www.telegraph.co.uk/content/dam/Travel/Destinations/Asia/Thailand/Phuket/phuket-thailand-beach-boat-lead-main-guide.jpg?imwidth=1400',
                         //     fit: BoxFit.cover,
                         //     height: MediaQuery.of(context).size.height * 0.6,
                         //   ),
                         // ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15.0),
+                          ),
+                          child: Image(
+                            image: model.image,
+                            fit: BoxFit.cover,
+                            height: MediaQuery.of(context).size.height * 0.6,
+                          ),
+                        ),
                         SizedBox(
                           height: 20.0,
                         ),
